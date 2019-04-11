@@ -244,7 +244,7 @@ public class SandLab
     }
     
     //DYNOMITE
-    if (grid[randomRow][randomCol] == 9)
+    if (grid[randomRow][randomCol] == 9 && randomRow > 1 && randomRow < grid.length - 2 && randomCol > 1 && randomCol < grid[0].length - 2)
     {
     	try
     	{

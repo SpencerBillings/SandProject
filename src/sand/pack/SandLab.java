@@ -1,6 +1,7 @@
 package sand.pack;
 import java.awt.*;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class SandLab
 {
@@ -10,6 +11,12 @@ public class SandLab
   public static final int METAL = 1;
   public static final int SAND = 2;
   public static final int WATER = 3;
+  public static final int ACID = 4;
+  public static final int LAVA = 5;
+  public static final int ROCK = 6;
+  public static final int OBSIDIAN = 7;
+  public static final int STEAM = 8;
+  public static final int DYNOMITE = 9;
   
   //do not add any more fields below
   private int[][] grid;
@@ -26,12 +33,18 @@ public class SandLab
     String[] names;
     // Change this value to add more buttons
     //Step 4,6
-    names = new String[4];
+    names = new String[10];
     // Each value needs a name for the button
     names[EMPTY] = "Empty";
     names[METAL] = "Metal";
     names[SAND] = "Sand";
     names[WATER] = "Water";
+    names[ACID] = "Acid";
+    names[LAVA] = "Lava";
+    names[ROCK] = "Rock";
+    names[OBSIDIAN] = "Obsidian";
+    names[STEAM] = "Steam";
+    names[DYNOMITE] = "Dynomite";
     
     //1. Add code to initialize the data member grid with same dimensions
     grid = new int[numRows][numCols];
@@ -71,6 +84,30 @@ public class SandLab
     		{
     			display.setColor(row, col, Color.BLUE);
     		}
+    		else if (grid[row][col] == 4)
+    		{
+    			display.setColor(row,  col,  Color.GREEN);
+    		}
+    		else if (grid[row][col] == 5)
+    		{
+    			display.setColor(row,  col,  Color.ORANGE);
+    		}
+    		else if (grid[row][col] == 6)
+    		{
+    			display.setColor(row,  col,  Color.LIGHT_GRAY);
+    		}
+    		else if (grid[row][col] == 7)
+    		{
+    			display.setColor(row,  col,  Color.DARK_GRAY);
+    		}
+    		else if (grid[row][col] == 8)
+    		{
+    			display.setColor(row,  col,  Color.WHITE);
+    		}
+    		else if (grid[row][col] == 9)
+    		{
+    			display.setColor(row, col, Color.RED);
+    		}
     	}
     }
   }
@@ -85,26 +122,164 @@ public class SandLab
     int randomRow = (int) (Math.random() * grid.length - 1);
     int randomCol = (int) (Math.random() * grid[0].length);
     //remember that you need to watch for the edges of the array
+    
+    // SAND
     if (grid[randomRow][randomCol] == 2 && grid[randomRow + 1][randomCol] == 0)
     {
     	grid[randomRow][randomCol] = 0;
     	grid[randomRow + 1][randomCol] = 2;
     }
+    else if (grid[randomRow][randomCol] == 2 && grid[randomRow + 1][randomCol] == 3)
+    {
+    	grid[randomRow][randomCol] = 3;
+    	grid[randomRow + 1][randomCol] = 2;
+    }
     
-    if (grid[randomRow][randomCol] == 3 && grid[randomRow + 1][randomCol] == 0)
+    //WATER
+    if (grid[randomRow][randomCol] == 3 && grid[randomRow + 1][randomCol] == 5)
+    {
+    	grid[randomRow][randomCol] = 8;
+    	grid[randomRow + 1][randomCol] = 6;
+    }
+    else if (randomCol != grid[0].length - 1 && grid[randomRow][randomCol] == 3 && grid[randomRow][randomCol + 1] == 5)
+    {
+    	grid[randomRow][randomCol] = 8;
+    	grid[randomRow][randomCol + 1] = 6;
+    }
+    else if (randomCol != 0 && grid[randomRow][randomCol] == 3 && grid[randomRow][randomCol - 1] == 5)
+    {
+    	grid[randomRow][randomCol] = 8;
+    	grid[randomRow][randomCol - 1] = 6;
+    }
+    else if (grid[randomRow][randomCol] == 3 && grid[randomRow + 1][randomCol] == 0)
     {
     	grid[randomRow][randomCol] = 0;
     	grid[randomRow + 1][randomCol] = 3;
     }
-    else if (randomCol != 0 && grid[randomRow][randomCol] == 3 && grid[randomRow][randomCol + 1] == 0)
+    else if (randomCol != grid[0].length - 1 && grid[randomRow][randomCol] == 3 && grid[randomRow][randomCol + 1] == 0)
     {
     	grid[randomRow][randomCol] = 0;
     	grid[randomRow][randomCol + 1] = 3;
     }
-    else if (randomCol != grid[0].length && grid[randomRow][randomCol] == 3 && grid[randomRow][randomCol - 1] == 0)
+    else if (randomCol != 0 && grid[randomRow][randomCol] == 3 && grid[randomRow][randomCol - 1] == 0)
     {
     	grid[randomRow][randomCol] = 0;
     	grid[randomRow][randomCol - 1] = 3;
+    }
+    
+    //ACID
+    if (grid[randomRow][randomCol] == 4 && grid[randomRow + 1][randomCol] == 0)
+    {
+    	grid[randomRow][randomCol] = 0;
+    	grid[randomRow + 1][randomCol] = 4;
+    }
+    else if (grid[randomRow][randomCol] == 4 && (grid[randomRow + 1][randomCol] == 1 || grid[randomRow + 1][randomCol] == 2 || grid[randomRow + 1][randomCol] == 3 || grid[randomRow + 1][randomCol] == 6 || grid[randomRow + 1][randomCol] == 7))
+    {
+    	grid[randomRow][randomCol] = 0;
+    	grid[randomRow + 1][randomCol] = 4;
+    }
+    else if (randomCol != grid[0].length - 1 && grid[randomRow][randomCol] == 4 && grid[randomRow][randomCol + 1] == 0)
+    {
+    	grid[randomRow][randomCol] = 0;
+    	grid[randomRow][randomCol + 1] = 4;
+    }
+    else if (randomCol != 0 && grid[randomRow][randomCol] == 4 && grid[randomRow][randomCol - 1] == 0)
+    {
+    	grid[randomRow][randomCol] = 0;
+    	grid[randomRow][randomCol - 1] = 4;
+    }
+    
+    //LAVA
+    if (grid[randomRow][randomCol] == 5 && grid[randomRow + 1][randomCol] == 3)
+    {
+    	grid[randomRow][randomCol] = 5;
+    	grid[randomRow + 1][randomCol] = 7;
+    }
+    else if (randomCol != grid[0].length - 1 && grid[randomRow][randomCol] == 5 && grid[randomRow][randomCol + 1] == 3)
+    {
+    	grid[randomRow][randomCol] = 5;
+    	grid[randomRow][randomCol + 1] = 7;
+    }
+    else if (randomCol != 0 && grid[randomRow][randomCol] == 5 && grid[randomRow][randomCol - 1] == 3)
+    {
+    	grid[randomRow][randomCol] = 5;
+    	grid[randomRow][randomCol - 1] = 7;
+    }
+    else if (grid[randomRow][randomCol] == 5 && grid[randomRow + 1][randomCol] == 0)
+    {
+    	grid[randomRow][randomCol] = 0;
+    	grid[randomRow + 1][randomCol] = 5;
+    }
+    else if (grid[randomRow][randomCol] != 7 && grid[randomRow][randomCol] == 5 && (grid[randomRow + 1][randomCol] == 1 || grid[randomRow + 1][randomCol] == 2 || grid[randomRow + 1][randomCol] == 3 || grid[randomRow + 1][randomCol] == 4 || grid[randomRow + 1][randomCol] == 6))
+    {
+    	grid[randomRow][randomCol] = 0;
+    	grid[randomRow + 1][randomCol] = 5;
+    }
+    else if (grid[randomRow][randomCol] != 7 && randomCol != grid[0].length - 1 && grid[randomRow][randomCol] == 5 && grid[randomRow][randomCol + 1] == 0)
+    {
+    	grid[randomRow][randomCol] = 0;
+    	grid[randomRow][randomCol + 1] = 5;
+    }
+    else if (grid[randomRow][randomCol] != 7 && randomCol != 0 && grid[randomRow][randomCol] == 5 && grid[randomRow][randomCol - 1] == 0)
+    {
+    	grid[randomRow][randomCol] = 0;
+    	grid[randomRow][randomCol - 1] = 5;
+    }
+    
+    //STEAM
+    if (randomRow != 0 && grid[randomRow][randomCol] == 8 && grid[randomRow - 1][randomCol] == 0)
+    {
+    	grid[randomRow][randomCol] = 0;
+    	grid[randomRow - 1][randomCol] = 8;
+    }
+    else if (randomRow != 0 && randomCol != grid[0].length - 1 && grid[randomRow][randomCol] == 8 && grid[randomRow][randomCol + 1] == 0)
+    {
+    	grid[randomRow][randomCol] = 0;
+    	grid[randomRow][randomCol + 1] = 8;
+    }
+    else if (randomRow != 0 && randomCol != 0 && grid[randomRow][randomCol] == 8 && grid[randomRow][randomCol - 1] == 0)
+    {
+    	grid[randomRow][randomCol] = 0;
+    	grid[randomRow][randomCol - 1] = 8;
+    }
+    
+    //DYNOMITE
+    if (grid[randomRow][randomCol] == 9)
+    {
+    	try
+    	{
+    		System.out.println("3...");
+    		Thread.sleep(1000);
+    		System.out.println("2...");
+    		Thread.sleep(1000);
+    		System.out.println("1...");
+    		Thread.sleep(1000);
+    		System.out.println("BOOM!");
+    		grid[randomRow][randomCol] = 0;
+    		grid[randomRow - 1][randomCol] = 0;
+    		grid[randomRow][randomCol - 1] = 0;
+    		grid[randomRow - 1][randomCol - 1] = 0;
+    		grid[randomRow + 1][randomCol] = 0;
+    		grid[randomRow][randomCol + 1] = 0;
+    		grid[randomRow + 1][randomCol + 1] = 0;
+    		grid[randomRow - 1][randomCol + 1] = 0;
+    		grid[randomRow + 1][randomCol - 1] = 0;
+    		grid[randomRow - 2][randomCol + 1] = 0;
+    		grid[randomRow - 2][randomCol - 1] = 0;
+    		grid[randomRow - 2][randomCol] = 0;
+    		grid[randomRow + 2][randomCol + 1] = 0;
+    		grid[randomRow + 2][randomCol - 1] = 0;
+    		grid[randomRow + 2][randomCol] = 0;
+    		grid[randomRow][randomCol + 2] = 0;
+    		grid[randomRow][randomCol - 2] = 0;
+    		grid[randomRow + 1][randomCol + 2] = 0;
+    		grid[randomRow - 1][randomCol + 2] = 0;
+    		grid[randomRow + 1][randomCol - 2] = 0;
+    		grid[randomRow - 1][randomCol - 2] = 0;
+    	} catch (InterruptedException ie)
+    	{
+    		ie.printStackTrace();
+    	}
     }
   }
   

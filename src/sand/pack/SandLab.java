@@ -248,11 +248,11 @@ public class SandLab
     {
     	try
     	{
-    		System.out.println("3...");
+    		System.out.println("3");
     		Thread.sleep(1000);
-    		System.out.println("2...");
+    		System.out.println("2");
     		Thread.sleep(1000);
-    		System.out.println("1...");
+    		System.out.println("1");
     		Thread.sleep(1000);
     		System.out.println("BOOM!");
     		grid[randomRow][randomCol] = 0;
